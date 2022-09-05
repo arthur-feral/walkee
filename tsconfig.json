@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "baseUrl": "./src",
     "target": "es5",
     "lib": [
       "dom",
