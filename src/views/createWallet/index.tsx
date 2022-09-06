@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ResetGlobalStyle } from 'styles/globals';
 
 const Container = styled.div`
 
 `;
 
-export function App() {
+export function CreateWallet() {
   return (
     <Container>
-      <ResetGlobalStyle />
-
-      HOME
+      Create new wallet
     </Container>
   );
 }
