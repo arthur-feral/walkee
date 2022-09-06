@@ -1,7 +1,7 @@
 export const enum Routing {
   Root = '/',
   Wallets = '/wallets',
-  Wallet = '/wallets/:walletId',
+  Wallet = '/wallets/:walletAddress',
   WalletNew = '/wallets/new',
 }
 
