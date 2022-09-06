@@ -1,9 +1,23 @@
+import { AsyncStatus } from 'helpers';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getRoute, Routing } from 'services/routing/helpers';
+import { createWallet } from 'services/wallets/helpers';
 import styled from 'styled-components';
 import { headingLargeTypography } from 'styles';
 import { Button } from 'styles/atoms/Button';
 import { Input } from 'styles/atoms/Input';
-import { grayColor } from 'styles/colors';
+import { grayColor, grayLight10Color } from 'styles/colors';
+
+const Message = styled.div`
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid ${grayColor};
+  background-color: ${grayLight10Color};
+  color: ${grayColor};
+  text-align: center;
+  margin-top: 16px;
+`;
 
 const Title = styled.div`
   ${headingLargeTypography}
@@ -43,12 +57,28 @@ const Container = styled.div`
 `;
 
 export function CreateWallet() {
+  const navigate = useNavigate();
+  const [encryptionProgress, setEncryptionProgress] = React.useState(0);
+  const [status, setStatus] = React.useState(AsyncStatus.Idle);
   const [password, setPassword] = React.useState('');
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const isCreateButtonDisabled = (
+    password === ''
+    || password !== passwordConfirmation
+    || status === AsyncStatus.Pending
+  );
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // create wallet
+    setStatus(AsyncStatus.Pending);
+    if (password === '' || password !== passwordConfirmation) {
+      return;
+    }
+
+    const walletAddress = await createWallet(password, setEncryptionProgress);
+    setStatus(AsyncStatus.Idle);
+    navigate(getRoute(Routing.Wallet, { walletAddress: walletAddress }));
   };
 
   return (
@@ -98,10 +128,16 @@ export function CreateWallet() {
 
         <Button
           type={'submit'}
-          disabled={password === '' || password !== passwordConfirmation}
+          disabled={isCreateButtonDisabled}
         >
           Create
         </Button>
+
+        {status === AsyncStatus.Pending && (
+          <Message>
+            Creating and encrypting your wallet, please wait... {`${encryptionProgress}%`}
+          </Message>
+        )}
       </Form>
     </Container>
   );
