@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Wallet } from 'services/wallets/helpers';
+import { ethers } from 'ethers';
 
 const Container = styled.div`
 
 `;
 
 type TProps = Readonly<{
-  wallet: Wallet;
+  wallet: ethers.Wallet;
 }>;
 
 export function WalletPreview({ wallet }: TProps) {
   return (
     <Container>
-      My Wallet {wallet.id}
+      My Wallet {wallet.address}
     </Container>
   );
 }

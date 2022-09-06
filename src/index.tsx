@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { WalletProvider } from 'services/wallets/WalletProvider';
 import { store } from 'store';
 import { Router } from 'views/Router';
 import reportWebVitals from './reportWebVitals';
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <Router />
+        <WalletProvider>
+          <Router />
+        </WalletProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>
