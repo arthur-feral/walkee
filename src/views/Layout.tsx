@@ -1,10 +1,15 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
+import { Header } from 'fragments/header';
 import { ResetGlobalStyle } from 'styles/globals';
 
-const Container = styled.div`
+const Content = styled.main`
+  
+`;
 
+const Container = styled.div`
+  padding: 16px;
 `;
 
 export function Layout() {
@@ -12,7 +17,10 @@ export function Layout() {
     <Container>
       <ResetGlobalStyle />
 
-      <Outlet />
+      <Header />
+      <Content>
+        <Outlet />
+      </Content>
     </Container>
   );
 }
