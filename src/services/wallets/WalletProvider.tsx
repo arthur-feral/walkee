@@ -35,7 +35,6 @@ export const WalletProvider = ({
   };
 
   const changeNetwork = (network: Network) => {
-    initializeProvider(network);
     setNetwork(network);
   };
 
@@ -57,7 +56,7 @@ export const WalletProvider = ({
 
   React.useEffect(() => {
     initializeProvider(network);
-  }, []);
+  }, [network]);
 
   return (
     <WalletContext.Provider value={store}>

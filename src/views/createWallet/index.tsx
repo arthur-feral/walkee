@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { headingLargeTypography } from 'styles';
 import { Button } from 'styles/atoms/Button';
 import { Input } from 'styles/atoms/Input';
-import { grayColor, grayLight10Color } from 'styles/colors';
+import { grayColor } from 'styles/colors';
 
 const Title = styled.div`
   ${headingLargeTypography}
