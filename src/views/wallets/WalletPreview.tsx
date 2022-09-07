@@ -3,7 +3,7 @@ import { AsyncStatus } from 'helpers';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRoute, Routing } from 'services/routing/helpers';
-import { safeAddress, truncAddress } from 'services/wallets/helpers';
+import { formatAddress, truncAddress } from 'services/wallets/helpers';
 import { useWalletProvider } from 'services/wallets/WalletProvider';
 import styled from 'styled-components';
 import { Button } from 'styles/atoms/Button';
@@ -58,7 +58,7 @@ export function WalletPreview({ wallet }: TProps) {
   React.useEffect(() => {
     if (providerStatus === AsyncStatus.Idle) {
       (async () => {
-        const newBalance = await getBalance(safeAddress(wallet.address));
+        const newBalance = await getBalance(formatAddress(wallet.address));
         setBalance(newBalance);
         setStatus(AsyncStatus.Idle);
       })();

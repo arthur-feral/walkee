@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { AsyncStatus } from 'helpers';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getWallet, openWallet, safeAddress } from 'services/wallets/helpers';
+import { getWallet, openWallet, formatAddress } from 'services/wallets/helpers';
 import { useWalletProvider } from 'services/wallets/WalletProvider';
 import styled from 'styled-components';
 import { bodySmallRegularTypography, captionTypography, headingLargeTypography, headingSmallTypography } from 'styles';
@@ -80,7 +80,6 @@ export function Wallet() {
   const walletAddress = params.walletAddress;
   const storedWallet = getWallet(walletAddress?.replace('0x', '') ?? '');
 
-
   const handleClickDecrypt = async () => {
     if (!walletAddress) {
       return;
@@ -108,7 +107,7 @@ export function Wallet() {
   React.useEffect(() => {
     if (walletAddress && providerStatus === AsyncStatus.Idle) {
       (async () => {
-        const newBalance = await getBalance(safeAddress(walletAddress));
+        const newBalance = await getBalance(formatAddress(walletAddress));
         setBalance(newBalance);
         setStatus(AsyncStatus.Idle);
       })();

@@ -24,7 +24,7 @@ export function getWallet(walletAddress: string): N<StoredWallet> {
 export async function openWallet(
   walletAddress: string,
   password: string,
-  progressCallback: (progressPercentage: number) => void,
+  progressCallback?: (progressPercentage: number) => void,
 ): Promise<N<ethers.Wallet>> {
   const wallet = getWallet(walletAddress);
   try {
@@ -32,7 +32,7 @@ export async function openWallet(
       JSON.stringify(wallet),
       password,
       (progress: number) =>
-        progressCallback(Math.round(progress * 100))
+        progressCallback ? progressCallback(Math.round(progress * 100)) : undefined
     );
 
     return openedWallet;
@@ -44,13 +44,14 @@ export async function openWallet(
 
 export async function createWallet(
   password: string,
-  progressCallback: (progressPercentage: number) => void,
+  progressCallback?: (progressPercentage: number) => void,
 ): Promise<string> {
   const wallet = ethers.Wallet.createRandom();
   const encryptedWalletRaw = await wallet.encrypt(
     password,
-    (progress: number) =>
-      progressCallback(Math.round(progress * 100))
+    progressCallback ?
+      (progress: number) =>
+        progressCallback(Math.round(progress * 100)) : undefined
   );
   const encryptedWallet = JSON.parse(encryptedWalletRaw);
   const wallets = getWallets();
@@ -63,13 +64,14 @@ export async function createWallet(
   return encryptedWallet.address;
 }
 
-export function safeAddress(address: string) {
+export function formatAddress(address: string) {
   return `0x${address.replace('0x', '')}`;
 }
 
 export function truncAddress(address: string) {
-  const prefix = address.slice(0, 4);
-  const sufix = address.slice(-4);
+  const safeAddress = address.replace('0x', '');
+  const prefix = safeAddress.slice(0, 4);
+  const sufix = safeAddress.slice(-4);
 
-  return safeAddress(`${prefix}...${sufix}`);
+  return formatAddress(`${prefix}...${sufix}`);
 }
