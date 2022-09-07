@@ -75,7 +75,7 @@ export function WalletPreview({ wallet }: TProps) {
         <Balance>
           {status === AsyncStatus.Pending && ' sync... '}
           {!balance && '♢ -'}
-          {balance && `♢ ${balance.toNumber()}`}
+          {balance && `♢ ${ethers.utils.formatEther(balance)}`}
         </Balance>
       </Content>
       <Button
