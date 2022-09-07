@@ -20,6 +20,17 @@ export const headingLargeTypography = css`
 `;
 
 /**
+ * Typography style for the main title on tool pages.
+ */
+export const headingSmallTypography = css`
+  ${fontTypography}
+
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+`;
+
+/**
  * Typography style for UI elements, baseline text, short paragraphs.
  */
 export const bodySmallRegularTypography = css`

@@ -21,10 +21,19 @@ export function getWallet(walletAddress: string): N<StoredWallet> {
   return wallets[walletAddress] || null;
 }
 
-export async function openWallet(walletAddress: string, password: string): Promise<N<ethers.Wallet>> {
+export async function openWallet(
+  walletAddress: string,
+  password: string,
+  progressCallback: (progressPercentage: number) => void,
+): Promise<N<ethers.Wallet>> {
   const wallet = getWallet(walletAddress);
   try {
-    const openedWallet = await ethers.Wallet.fromEncryptedJson(JSON.stringify(wallet), password);
+    const openedWallet = await ethers.Wallet.fromEncryptedJson(
+      JSON.stringify(wallet),
+      password,
+      (progress: number) =>
+        progressCallback(Math.round(progress * 100))
+    );
 
     return openedWallet;
   } catch (error: unknown) {
@@ -33,7 +42,10 @@ export async function openWallet(walletAddress: string, password: string): Promi
 
 }
 
-export async function createWallet(password: string, progressCallback: (progressPercentage: number) => void): Promise<string> {
+export async function createWallet(
+  password: string,
+  progressCallback: (progressPercentage: number) => void,
+): Promise<string> {
   const wallet = ethers.Wallet.createRandom();
   const encryptedWalletRaw = await wallet.encrypt(
     password,

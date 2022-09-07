@@ -30,7 +30,6 @@ export const WalletProvider = ({
       args.push(ETHERSCAN_API_KEY);
     }
     const newProvider = new ethers.providers.EtherscanProvider(...args);
-    console.log('newProvider', newProvider);
     setProvider(newProvider);
     setProviderStatus(AsyncStatus.Idle);
   };

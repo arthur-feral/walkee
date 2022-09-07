@@ -1,3 +1,4 @@
+import { ProgressMessage } from 'components/ProgressMessage';
 import { AsyncStatus } from 'helpers';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,16 +9,6 @@ import { headingLargeTypography } from 'styles';
 import { Button } from 'styles/atoms/Button';
 import { Input } from 'styles/atoms/Input';
 import { grayColor, grayLight10Color } from 'styles/colors';
-
-const Message = styled.div`
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid ${grayColor};
-  background-color: ${grayLight10Color};
-  color: ${grayColor};
-  text-align: center;
-  margin-top: 16px;
-`;
 
 const Title = styled.div`
   ${headingLargeTypography}
@@ -134,9 +125,9 @@ export function CreateWallet() {
         </Button>
 
         {status === AsyncStatus.Pending && (
-          <Message>
+          <ProgressMessage>
             Creating and encrypting your wallet, please wait... {`${encryptionProgress}%`}
-          </Message>
+          </ProgressMessage>
         )}
       </Form>
     </Container>
