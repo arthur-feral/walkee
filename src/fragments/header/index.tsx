@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getRoute, Routing } from 'services/routing/helpers';
+import { Network } from 'services/wallets/helpers';
+import { useWalletProvider } from 'services/wallets/WalletProvider';
 import styled from 'styled-components';
 import { headingLargeTypography } from 'styles';
 import { grayColor } from 'styles/colors';
@@ -21,6 +23,10 @@ const Nav = styled.nav`
   align-items: center;
 `;
 
+const Networks = styled.select`
+  
+`;
+
 const Container = styled.header`
   display: flex;
   flex-direction: column;
@@ -29,6 +35,12 @@ const Container = styled.header`
 `;
 
 export function Header() {
+  const { changeNetwork, network } = useWalletProvider();
+  const handleChangeNetwork = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    changeNetwork(value as Network);
+  };
+
   return (
     <Container>
       <Name>Walkee</Name>
@@ -42,6 +54,16 @@ export function Header() {
           <Link to={getRoute(Routing.WalletNew)}>Create a wallet</Link>
         </NavLink>
       </Nav>
+
+      <Networks
+        id="networks"
+        name="networks"
+        onChange={handleChangeNetwork}
+        value={network}
+      >
+        <option value={Network.Testnet}>Testnet</option>
+        <option value={Network.Mainnet}>Mainnet</option>
+      </Networks>
     </Container>
   );
 }

@@ -51,9 +51,13 @@ export async function createWallet(password: string, progressCallback: (progress
   return encryptedWallet.address;
 }
 
+export function safeAddress(address: string) {
+  return `0x${address.replace('0x', '')}`;
+}
+
 export function truncAddress(address: string) {
   const prefix = address.slice(0, 4);
   const sufix = address.slice(-4);
 
-  return `0x${prefix}...${sufix}`;
+  return safeAddress(`${prefix}...${sufix}`);
 }
