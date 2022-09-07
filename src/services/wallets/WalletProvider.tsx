@@ -4,7 +4,8 @@ import React from 'react';
 import { ETHERSCAN_API_KEY, Network } from 'services/wallets/helpers';
 
 export type WalletContextStore = {
-  setNetwork: (network: Network) => void;
+  network: Network;
+  changeNetwork: (network: Network) => void;
   providerStatus: AsyncStatus;
   provider: N<ethers.providers.EtherscanProvider>;
   getBalance: (address: string) => Promise<N<ethers.BigNumber>>;
@@ -20,6 +21,7 @@ export const WalletProvider = ({
   children,
 }: Props) => {
   const [providerStatus, setProviderStatus] = React.useState<AsyncStatus>(AsyncStatus.Pending);
+  const [network, setNetwork] = React.useState<Network>(Network.Testnet);
   const [provider, setProvider] = React.useState<N<ethers.providers.EtherscanProvider>>(null);
 
   const initializeProvider = async (network: Network) => {
@@ -28,12 +30,14 @@ export const WalletProvider = ({
       args.push(ETHERSCAN_API_KEY);
     }
     const newProvider = new ethers.providers.EtherscanProvider(...args);
+    console.log('newProvider', newProvider);
     setProvider(newProvider);
     setProviderStatus(AsyncStatus.Idle);
   };
 
-  const setNetwork = (network: Network) => {
+  const changeNetwork = (network: Network) => {
     initializeProvider(network);
+    setNetwork(network);
   };
 
   const getBalance = async (address: string): Promise<N<ethers.BigNumber>> => {
@@ -45,14 +49,15 @@ export const WalletProvider = ({
   };
 
   const store = {
-    setNetwork,
+    changeNetwork,
     providerStatus,
     provider,
     getBalance,
+    network,
   };
 
   React.useEffect(() => {
-    initializeProvider(Network.Testnet);
+    initializeProvider(network);
   }, []);
 
   return (
